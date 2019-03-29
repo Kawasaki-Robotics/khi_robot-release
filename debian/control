@@ -1,0 +1,12 @@
+Source: ros-kinetic-rs-ikfast-plugin
+Section: misc
+Priority: extra
+Maintainer: matsui_hiro <matsui_hiro@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), liblapack-dev, ros-kinetic-catkin, ros-kinetic-moveit-core, ros-kinetic-pluginlib, ros-kinetic-roscpp, ros-kinetic-tf-conversions
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-rs-ikfast-plugin
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, liblapack-dev, ros-kinetic-moveit-core, ros-kinetic-pluginlib, ros-kinetic-roscpp, ros-kinetic-tf-conversions
+Description: The rs_ikfast_plugin package
