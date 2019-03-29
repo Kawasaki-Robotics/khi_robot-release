@@ -1,0 +1,12 @@
+Source: ros-kinetic-rs-gazebo
+Section: misc
+Priority: extra
+Maintainer: matsui_hiro <matsui_hiro@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-gazebo-ros, ros-kinetic-gazebo-ros-control
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-rs-gazebo
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-gazebo-ros, ros-kinetic-gazebo-ros-control
+Description: The rs_gazebo package
