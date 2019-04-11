@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>khi_robot_bringup</name>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <description>Package contains bringup scripts/config/tools for KHI Robot</description>
 
   <author email="nakamichi_d@khi.co.jp">nakamichi_d</author>
@@ -21,8 +21,8 @@
   <run_depend>position_controllers</run_depend>
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>tf</run_depend>
-  <run_depend>duaro_description</run_depend>
-  <run_depend>duaro_moveit_config</run_depend>
+  <run_depend>khi_duaro_description</run_depend>
+  <run_depend>khi_duaro_moveit_config</run_depend>
 
   <test_depend>roslaunch</test_depend>
   <test_depend>rostest</test_depend>
