@@ -1,8 +1,0 @@
-ros-kinetic-duaro-ikfast-plugin (1.0.0-0xenial) xenial; urgency=high
-
-  * duAro IKfast
-  * Contributors: nakamichi_d, matsui_hiro
-
- -- matsui_hiro <matsui_hiro@khi.co.jp>  Wed, 27 Mar 2019 15:00:00 -0000
-
-
