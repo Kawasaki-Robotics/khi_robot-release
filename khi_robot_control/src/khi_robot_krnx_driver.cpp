@@ -324,6 +324,7 @@ bool KhiRobotKrnxDriver::activate( const int cont_no, JointData *joint )
             {
                 return_code = krnx_ExecMon( cont_no, "SW ZDBLREFFLT_MODSTABLE=OFF", msg_buf, sizeof(msg_buf), &error_code );
             }
+            krnx_SetRtcCompMask( cont_no, ano, pow( 2, p_rb_tbl[cont_no]->arm_tbl[ano].jt_num ) - 1 );
         }
         /* Motor Power ON */
         return_code = krnx_ExecMon( cont_no, "ZPOW ON", msg_buf, sizeof(msg_buf), &error_code );
@@ -334,58 +335,17 @@ bool KhiRobotKrnxDriver::activate( const int cont_no, JointData *joint )
     }
 
     /* Load RTC param */
-    snprintf( param, sizeof(param), "%s/param/rb_rtc_%s.pg", KHI_ROBOT_CONTROL_DIR, p_rb_tbl[cont_no]->robot_name.c_str() );
-    return_code = krnx_Load( cont_no, param );
-    retKrnxRes( cont_no, "krnx_Load", return_code );
-
-    /* Load HOME param */
-    snprintf( param, sizeof(param), "%s/param/rb_rtc_home.pg", KHI_ROBOT_CONTROL_DIR );
-    if ( ( fp = fopen( param, "w" ) ) != NULL) {
-        /* Update HOME position */
-        for ( int ano = 0; ano < robot_info[cont_no].arm_num; ano++ )
-        {
-            if ( !getCurMotionData( cont_no, ano, &motion_data ) ) { return false; }
-
-            for ( int jt = 0; jt < joint->joint_num; jt++ )
-            {
-                memcpy( &p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home, &motion_data.ang_ref[jt], sizeof(motion_data.ang_ref[jt]) );
-                if ( p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].type == TYPE_LINE )
-                {
-                    p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home /= KHI_KRNX_M2MM;
-                }
-            }
-        }
-
-        fprintf( fp, ".JOINTS\n" );
-        for ( int ano = 0; ano < robot_info[cont_no].arm_num; ano++ )
-        {
-            fprintf( fp, "#rtchome%d", ano+1 );
-            for ( int jt = 0; jt < p_rb_tbl[cont_no]->arm_tbl[ano].jt_num; jt++ )
-            {
-                if ( p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].type == TYPE_LINE )
-                {
-                    fprintf( fp, " %.6f", p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home*KHI_KRNX_M2MM );
-                }
-                else
-                {
-                    fprintf( fp, " %.6f", p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home*180/M_PI );
-                }
-            }
-            fprintf( fp, "\n" );
-        }
-        fprintf( fp, ".END\n" );
-        fclose( fp );
-    }
-    else
+    if ( !makeRtcParam( cont_no, p_rb_tbl[cont_no]->robot_name.c_str(), param, sizeof(param), joint ) )
     {
+        errorPrint( "Failed to make rtc param");
         setState( cont_no, ERROR );
-        errorPrint( "cannot open param file" );
         return false;
     }
     return_code = krnx_Load( cont_no, param );
+    unlink(param);
     if ( !retKrnxRes( cont_no, "krnx_Load", return_code ) )
     {
-        errorPrint( "cannot load param file" );
+        errorPrint( "Failed to load rtc param" );
         return false;
     }
 
@@ -428,7 +388,7 @@ bool KhiRobotKrnxDriver::activate( const int cont_no, JointData *joint )
                 timeout_cnt++;
                 if ( timeout_cnt > timeout_cnt_th )
                 {
-                    errorPrint( "activation failed: timeout" );
+                    errorPrint( "Failed to activate: timeout" );
                     setState( cont_no, ERROR );
                     return false;
                 }
@@ -597,8 +557,10 @@ bool KhiRobotKrnxDriver::writeData( const int cont_no, JointData joint )
     static int sim_cnt = 0;
     int idx, ano, jt;
     char msg[1024] = { 0 };
-    char status[16] = { 0 };
-    float diff = 0;
+    char status[128] = { 0 };
+    TKrnxCurMotionData data;
+    float jt_pos = 0.0F;
+    float jt_vel = 0.0F;
     bool is_primed = true;
 
     if ( !contLimitCheck( cont_no, KRNX_MAX_CONTROLLER ) ) { return false; }
@@ -647,19 +609,19 @@ bool KhiRobotKrnxDriver::writeData( const int cont_no, JointData joint )
         /* ERROR log */
         for ( int ano = 0; ano < robot_info[cont_no].arm_num; ano++ )
         {
-            snprintf( msg, sizeof(msg), "[krnx_PrimeRtcCompData] ano:%d [jt]status:diff ", ano+1 );
+            snprintf( msg, sizeof(msg), "[krnx_PrimeRtcCompData] ano:%d [jt]pos:vel:status ", ano+1 );
             krnx_GetRtcCompData( cont_no, ano, &rtc_old_comp[cont_no][ano][0] );
-            for ( int cnt = 0; cnt < p_rb_tbl[cont_no]->arm_tbl[ano].jt_num; cnt++ )
+            getCurMotionData( cont_no, ano, &data );
+            for ( int jt = 0; jt < p_rb_tbl[cont_no]->arm_tbl[ano].jt_num; jt++ )
             {
-                if ( p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[cnt].type == TYPE_LINE )
+                jt_pos = data.ang_ref[jt];
+                jt_vel = ( rtc_comp[cont_no][ano][jt] - rtc_old_comp[cont_no][ano][jt] )*(1e+9/robot_info[cont_no].period);
+                if ( p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].type == TYPE_LINE )
                 {
-                    diff = ( rtc_comp[cont_no][ano][cnt] - rtc_old_comp[cont_no][ano][cnt] )/KHI_KRNX_M2MM*(1e+9/robot_info[cont_no].period);
+                    jt_pos /= KHI_KRNX_M2MM;
+                    jt_vel /= KHI_KRNX_M2MM;
                 }
-                else
-                {
-                    diff = ( rtc_comp[cont_no][ano][cnt] - rtc_old_comp[cont_no][ano][cnt] )*(1e+9/robot_info[cont_no].period);
-                }
-                snprintf( status, sizeof(status), "[%d]%d:%f ", cnt+1, rtc_status[cont_no][ano][cnt], diff );
+                snprintf( status, sizeof(status), "[%d]%.4f:%.4f:%d ", jt+1, jt_pos, jt_vel, rtc_status[cont_no][ano][jt] );
                 strcat( msg, status );
             }
             errorPrint( msg );
@@ -784,21 +746,105 @@ std::vector<std::string> KhiRobotKrnxDriver::splitString( const std::string str,
     int last = str.find_first_of( del );
     std::vector<std::string> list;
 
-    while ( first < str.size() )
+    if ( first < str.size() )
     {
-        std::string sub_str( str, first, last - first );
-        list.push_back( sub_str );
-
+        std::string sub_str1( str, first, last - first );
+        list.push_back( sub_str1 );
         first = last + 1;
-        last = str.find_first_of( del, first );
-
-        if ( last == std::string::npos )
-        {
-            last = str.size();
-        }
+        std::string sub_str2( str, first, std::string::npos );
+        list.push_back( sub_str2 );
     }
 
     return list;
+}
+
+bool KhiRobotKrnxDriver::makeRtcParam( const int cont_no, const std::string name, char* p_path, size_t p_path_siz, JointData *joint )
+{
+    FILE *fp;
+    int fd;
+    char tmplt[] = "/tmp/khi_robot-rtc_param-XXXXXX";
+    char fdpath[128] = { 0 };
+    ssize_t rsize;
+    TKrnxCurMotionData motion_data = { 0 };
+
+    fd = mkstemp(tmplt);
+
+    if ( ( fp = fdopen( fd, "w" ) ) != NULL)
+    {
+        /* retrieve path */
+        snprintf( fdpath, sizeof(fdpath), "/proc/%d/fd/%d", getpid(), fd );
+        rsize = readlink( fdpath, p_path, p_path_siz );
+        if ( rsize < 0 ) { return false; }
+
+        /* RTC program */
+        if ( name == KHI_ROBOT_WD002N )
+        {
+            fprintf( fp, ".PROGRAM rb_rtc1()\n" );
+            fprintf( fp, "  FOR .i = 1 TO 8\n" );
+            fprintf( fp, "    .acc[.i] = 1\n" );
+            fprintf( fp, "  END\n" );
+            fprintf( fp, "  L3ACCURACY .acc[1] ALWAYS\n" );
+            fprintf( fp, "  FOR .i = 1 TO 8\n" );
+            fprintf( fp, "    .acc[.i] = 0\n" );
+            fprintf( fp, "  END\n" );
+            fprintf( fp, "  RTC_SW 1: ON\n" );
+            fprintf( fp, "1 JMOVE #rtchome1\n" );
+            fprintf( fp, "  GOTO 1\n" );
+            fprintf( fp, "  RTC_SW 1: OFF\n" );
+            fprintf( fp, ".END\n" );
+            fprintf( fp, ".PROGRAM rb_rtc2()\n" );
+            fprintf( fp, "  FOR .i = 1 TO 8\n" );
+            fprintf( fp, "    .acc[.i] = 1\n" );
+            fprintf( fp, "  END\n" );
+            fprintf( fp, "  L3ACCURACY .acc[1] ALWAYS\n" );
+            fprintf( fp, "  FOR .i = 1 TO 8\n" );
+            fprintf( fp, "    .acc[.i] = 0\n" );
+            fprintf( fp, "  END\n" );
+            fprintf( fp, "  RTC_SW 2: ON\n" );
+            fprintf( fp, "1 JMOVE #rtchome2\n" );
+            fprintf( fp, "  GOTO 1\n" );
+            fprintf( fp, "  RTC_SW 2: OFF\n" );
+            fprintf( fp, ".END\n" );
+        }
+        else
+        {
+            fprintf( fp, ".PROGRAM rb_rtc1()\n" );
+            fprintf( fp, "  ACCURACY 1 FINE\n" );
+            fprintf( fp, "  JMOVE #rtchome1\n" );
+            fprintf( fp, "  ACCURACY 0 ALWAYS\n" );
+            fprintf( fp, "  RTC_SW 1: ON\n" );
+            fprintf( fp, "1 JMOVE #rtchome1\n" );
+            fprintf( fp, "  GOTO 1\n" );
+            fprintf( fp, "  RTC_SW 1: OFF\n" );
+            fprintf( fp, ".END\n" );
+        }
+        fclose( fp );
+
+        /* HOME position */
+        for ( int ano = 0; ano < robot_info[cont_no].arm_num; ano++ )
+        {
+            /* AS */
+            snprintf( cmd_buf, sizeof(cmd_buf), "HERE/N %d: #rtchome%d", ano+1, ano+1 );
+            return_code = krnx_ExecMon( cont_no, cmd_buf, msg_buf, sizeof(msg_buf), &error_code );
+
+            /* driver */
+            if ( !getCurMotionData( cont_no, ano, &motion_data ) ) { return false; }
+            for ( int jt = 0; jt < joint->joint_num; jt++ )
+            {
+                memcpy( &p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home, &motion_data.ang_ref[jt], sizeof(motion_data.ang_ref[jt]) );
+                if ( p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].type == TYPE_LINE )
+                {
+                    p_rb_tbl[cont_no]->arm_tbl[ano].jt_tbl[jt].home /= KHI_KRNX_M2MM;
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
 }
 
 bool KhiRobotKrnxDriver::commandHandler( khi_robot_msgs::KhiRobotCmd::Request &req, khi_robot_msgs::KhiRobotCmd::Response &res)
@@ -847,21 +893,10 @@ bool KhiRobotKrnxDriver::commandHandler( khi_robot_msgs::KhiRobotCmd::Request &r
         else
         {
             vlist = splitString( req.cmd, del );
-            if ( vlist.size() < 2 )
+            if ( vlist.size() == 2 )
             {
-                res.driver_ret = KRNX_E_BADARGS;
-                res.cmd_ret = "INVALID ARGS";
-            }
-
-            api_cmd = vlist[0];
-            if ( api_cmd == "get_signal" )
-            {
-                if ( vlist.size() != 2 )
-                {
-                    res.driver_ret = KRNX_E_BADARGS;
-                    res.cmd_ret = "INVALID ARGS";
-                }
-                else
+                api_cmd = vlist[0];
+                if ( api_cmd == "get_signal" )
                 {
                     dcode = krnx_GetCurIoInfo( cont_no, &io );
                     res.driver_ret = dcode;
@@ -888,21 +923,13 @@ bool KhiRobotKrnxDriver::commandHandler( khi_robot_msgs::KhiRobotCmd::Request &r
                         res.driver_ret = KRNX_E_BADARGS;
                         res.cmd_ret = "INVALID ARGS";
                     }
-
                     if ( res.driver_ret == KRNX_NOERROR )
                     {
                         if ( onoff ) { res.cmd_ret = "-1"; }
                         else         { res.cmd_ret = "0";}
                     }
                 }
-            }
-            else if ( api_cmd == "set_signal" )
-            {
-                if ( vlist.size() > 2 )
-                {
-                    res.driver_ret = KRNX_E_BADARGS;
-                }
-                else
+                else if ( api_cmd == "set_signal" )
                 {
                     std::string as_cmd = req.cmd;
                     as_cmd.replace( 0, strlen("set_signal"), "SIGNAL" );
@@ -910,13 +937,17 @@ bool KhiRobotKrnxDriver::commandHandler( khi_robot_msgs::KhiRobotCmd::Request &r
                     res.driver_ret = dcode;
                     res.as_ret = acode;
                 }
+                else
+                {
+                    res.driver_ret = KRNX_E_BADARGS;
+                    res.cmd_ret = "INVALID CMD";
+                }
             }
             else
             {
                 res.driver_ret = KRNX_E_BADARGS;
-                res.cmd_ret = "INVALID CMD";
+                res.cmd_ret = "INVALID ARGS";
             }
-
         }
     }
     else
