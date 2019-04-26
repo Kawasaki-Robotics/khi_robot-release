@@ -1,71 +1,64 @@
-khi_robot [![Build Status](https://travis-ci.com/Kawasaki-Robotics/khi_robot.svg?branch=master)](https://travis-ci.com/Kawasaki-Robotics/khi_robot)
-===================================================================================================================================================
+# tra1_bringup
 
-This repository provides ROS support for KHI robots.  
-ROS distribution `Kinetic` is supported.
+## Quick start
 
-## How to Launch
+### ROS controller
 
-### 1. Launch Control Node
-
-Start khi_robot_control as:
+Start ROS controllers
 
 ```
-roslaunch khi_robot_bringup ***_bringup.launch ip:=***
+$ roslaunch tra1_bringup tra1_bringup.launch
 ```
 
-If you only want to view robot(not control), specify the argument 'viewer' to use viewer mode:
-
+This will publish and subscribe following topics.
+ 
 ```
-roslaunch khi_robot_bringup ***_bringup.launch ip:=*** viewer:=true
-```
-
-If you have no real robot, specify the argument 'simulation' to use loopback mode:
-
-```
-roslaunch khi_robot_bringup ***_bringup.launch simulation:=true
-```
-
-If you want to use gazebo simulation:
-
-```
-roslaunch ***_gazebo ***_world.launch
-```
-
-### 2. Launch MoveIt! Node
-
-Start a MoveIt! script as:
-
-```
-roslaunch ***_moveit_config moveit_planning_execution.launch
+$ rostopic list
+/diagnostics
+/joint_states
+/position_trajectory_controller/command
+/position_trajectory_controller/follow_joint_trajectory/cancel
+/position_trajectory_controller/follow_joint_trajectory/feedback
+/position_trajectory_controller/follow_joint_trajectory/goal
+/position_trajectory_controller/follow_joint_trajectory/result
+/position_trajectory_controller/follow_joint_trajectory/status
+/position_trajectory_controller/state
+/rosout
+/rosout_agg
+/tf
+/tf_static
 ```
 
-Now you can see the rviz screen of MoveIt! and interact the robot with the GUI.
-
-## Connecting Real Robot
-
-Refer to [docs/ConnectingRealRobot.md](docs/ConnectingRealRobot.md)
-
-## Supported Robot
-
- * duaro (currently simulation only)
- * rs007l
- * rs007n
- * rs80n
-
-## Notes
-
-### About this software
-
-This software is experimental code. There are known issues and missing functionality.  
-The APIs are completely unstable and likely to change. Use in production systems is not recommended.
-
-### Coordinate
-
-KHI coordinate and ROS cordinate are different.
+If you add `simulation` argument, you can run ROS controller without motor drivers.
 
 ```
-Origin of KHI coordinate is Robot Link1 origin.
+$ roslaunch tra1_bringup tra1_bringup.launch simulation:=true
+```
 
-Origin of ROS coordinate is World origin.
+To get current joint status, subscribe `/joint_states`, type of `sensor_msgs/JointState`.
+
+To control the robot joint, publish `/position_trajectory_controller/follow_joint_trajectory/goal`, with `control_msgs/FollowJointTrajectoryActionGoal` message.
+
+### joint_states
+
+To observe current joint states, run
+
+```
+$ rostopic echo /joint_states
+```
+
+### rqt_joint_trajectory_controller
+
+To control the robot using GUI, run
+
+```
+$ rosrun rqt_joint_trajectory_controller rqt_joint_trajectory_controller 
+```
+
+### MoveIt
+
+To control via MoveIt, run
+
+```
+$ roslaunch tra1_bringup tra1_moveit.launch
 ```
