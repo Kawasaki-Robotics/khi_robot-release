@@ -1,0 +1,12 @@
+Source: ros-kinetic-khi-robot-control
+Section: misc
+Priority: extra
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-controller-manager, ros-kinetic-diagnostic-updater, ros-kinetic-hardware-interface, ros-kinetic-joint-limits-interface, ros-kinetic-khi-robot-msgs, ros-kinetic-realtime-tools, ros-kinetic-rostest, ros-kinetic-trajectory-msgs, ros-kinetic-transmission-interface
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-khi-robot-control
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-controller-manager, ros-kinetic-diagnostic-updater, ros-kinetic-hardware-interface, ros-kinetic-joint-limits-interface, ros-kinetic-joint-state-controller, ros-kinetic-joint-trajectory-controller, ros-kinetic-khi-robot-msgs, ros-kinetic-position-controllers, ros-kinetic-trajectory-msgs, ros-kinetic-transmission-interface
+Description: ROS KHI robot controller package based on ros_control
