@@ -1,0 +1,12 @@
+Source: ros-kinetic-khi-rs007n-moveit-config
+Section: misc
+Priority: extra
+Maintainer: matsui_hiro <matsui_hiro@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-khi-rs-description, ros-kinetic-roslaunch, ros-kinetic-rostest
+Homepage: http://moveit.ros.org/
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-khi-rs007n-moveit-config
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-joint-state-publisher, ros-kinetic-khi-rs-description, ros-kinetic-moveit-fake-controller-manager, ros-kinetic-moveit-kinematics, ros-kinetic-moveit-planners-ompl, ros-kinetic-moveit-ros-move-group, ros-kinetic-moveit-ros-visualization, ros-kinetic-robot-state-publisher, ros-kinetic-rviz, ros-kinetic-tf, ros-kinetic-xacro
+Description: An automatically generated package with all the configuration and launch files for using the khi_rs007n with the MoveIt! Motion Planning Framework
