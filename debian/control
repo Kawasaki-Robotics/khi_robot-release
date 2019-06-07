@@ -1,0 +1,12 @@
+Source: ros-kinetic-khi-rs-description
+Section: misc
+Priority: extra
+Maintainer: matsui_hiro <matsui_hiro@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-roslaunch
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-khi-rs-description
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+Description: The khi_rs_description package
