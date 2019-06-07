@@ -2,6 +2,11 @@
 Changelog for package khi_duaro_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.2 (2019-06-07)
+------------------
+* add USE_SOURCE_PERMISSIONS in CMakeLists.txt files those package have executable scripts (`#18 <https://github.com/Kawasaki-Robotics/khi_robot/issues/18>`_)
+* Contributors: Yosuke Yamamoto
+
 1.1.1 (2019-04-25)
 ------------------
 
