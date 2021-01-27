@@ -1,0 +1,12 @@
+Source: ros-kinetic-khi-robot
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-khi-robot
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-khi-duaro-description, ros-kinetic-khi-duaro-gazebo, ros-kinetic-khi-duaro-ikfast-plugin, ros-kinetic-khi-duaro-moveit-config, ros-kinetic-khi-robot-bringup, ros-kinetic-khi-robot-control, ros-kinetic-khi-robot-msgs, ros-kinetic-khi-rs-description, ros-kinetic-khi-rs-gazebo, ros-kinetic-khi-rs-ikfast-plugin, ros-kinetic-khi-rs007l-moveit-config, ros-kinetic-khi-rs007n-moveit-config, ros-kinetic-khi-rs080n-moveit-config
+Description: Meta package for khi_robot
