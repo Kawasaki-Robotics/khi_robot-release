@@ -1,11 +1,13 @@
+  khi_robot_param:
+    robot: RS007N
+    arm:
+      arm1:
+        - rs007n_arm_controller
+
   # Publish all joint states -----------------------------------
   joint_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50  
-
-  khi_robot_controllers:
-    names:
-      - rs007n_arm_controller
 
   # Position - Joint Position Trajectory Controller -------------------
   rs007n_arm_controller:
@@ -37,3 +39,14 @@
     action_monitor_rate: 20 # Defaults to 20
     #hold_trajectory_duration: 0 # Defaults to 0.5
 
+
+  # Joint Group Position Controller -------------------
+  rs007n_joint_group_controller:
+    type: "position_controllers/JointGroupPositionController"
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
