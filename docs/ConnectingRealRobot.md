@@ -4,11 +4,12 @@
 
 ### F Series
 
-Handling: Higher than ASF_01000000W
+Handling: Higher than ```ASF_01000000W```  
+duAro: Higher than ```ASF_06000000J```  
 
 ### OpenAS Series
 
-Handling: Higher than ASE401010XX3S
+Handling: Higher than ```ASE401010XX3S```  
 
 ## 2. Preparation
 
@@ -28,7 +29,7 @@ Make sure that the robot controller used for real-time control satisfies the fol
 
 Make sure that the Ubuntu PC used for real-time control satisfies the following conditions.
 
-* The PC is using realtime kernel for Ubuntu 16.04.
+* The PC is using realtime kernel for Ubuntu 16.04/18.04.
 * The user has real-time permissions.
   * (e.g.)Making a real-time group named `realtime`
     1. Make a group and add a user
@@ -97,12 +98,11 @@ To control robot controller on ROS, the drivere has control states.
 2:  "CONNECTED"       - Driver is connected to Robot Controller, but cannot control Robot Arm.
 3:  "ACTIVATING"      - Driver is now activating Robot Arm.
 4:  "ACTIVE"          - Driver can control Robot Arm.
-5:  "DEACTIVATING"    - Driver is now deactivating Robot Arm.
-6:  "DISCONNECTING"   - Driver is now disconnecting to Robot Controller.
-7:  "DISCONNECTED"    - Driver is disconnected to Robot Controller.
-8:  "ERROR"           - Driver halted due to ERROR.
-9:  "RESTART"         - Driver accepts restart instruction.
-10: "QUIT"            - Driver accepts quit instruction.
+5:  "HOLDED"          - Driver is holded. Driver doesn't move Robot Arm.
+6:  "DEACTIVATING"    - Driver is now deactivating Robot Arm.
+7:  "DISCONNECTING"   - Driver is now disconnecting to Robot Controller.
+8:  "DISCONNECTED"    - Driver is disconnected to Robot Controller.
+9:  "ERROR"           - Driver halted due to ERROR.
 ```
 
 You can get this status by Command Service "get_status".
@@ -184,7 +184,18 @@ int32 as_ret -> AS return code. Refer AS manual.
 string cmd_ret -> Driver Status
 ```
 
-### Restart Driver when its status is ERROR
+### Hold Driver
+
+```text
+string type -> "driver"
+string cmd -> "hold"
+---
+int32 driver_ret -> driver's return code. Refer KRNX_E_*** in krnx.h
+int32 as_ret -> AS return code. Refer AS manual.
+string cmd_ret -> NOT USED
+```
+
+### Restart Driver for ACTIVE
 
 ```text
 string type -> "driver"
@@ -214,7 +225,7 @@ Frequent error messages and troubleshooting are as shown in the table below.
 |Error message|Troubleshooting|
 |---|---|
 |ROS:%s does not match AS:%s|Match the robot model on ROS and robot controller.|
-|Invalid robot size|Select correct robot type.|
+|Invalid robot size|Confirm number of robot arm.|
 |Failed to make rtc param|Check the filesystem is correct.|
 |Failed to load rtc param|Check AS system.|
 |Failed to activate: timeout|Check AS's robot program.|
@@ -232,7 +243,7 @@ If an error is about "krnx_PrimeRtcCompData", the detail information is shown as
 |Name|Value|Description|
 |---|---|---|
 |pos|float|joint command position [rad or m]|
-|vel|float|joint command velocity [rad or m]|
+|vel|float|joint command velocity [rad/s or m/s]|
 |status|0x0001|Operational area upper limit over|
 ||0x0002|Operational area lower limit over|
 ||0x0004|RTC joint command velocity(diff) limit over|
@@ -290,7 +301,7 @@ Error code of KRNX API is defined in “khi_robot/khi_robot_control/include/krnx
 
 ## 7. Precausions
 
-* Make sure to use realtime kernel for Ubuntu 16.04.
+* Make sure to use realtime kernel for Ubuntu 16.04/18.04.
 * When a robot controller is in the real-time control mode, its state is same as the REPEAT mode. Therefore make sure to the safety issues when the robot controller is in real-time control mode.
 * Never make any changes on the sources of the “khi_robot” package.
 * Refer to the Documents and community of the MoveIt! for more details on motion/path planning and how to calculate command value.
