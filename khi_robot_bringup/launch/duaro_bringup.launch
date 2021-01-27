@@ -36,6 +36,8 @@
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find khi_robot_bringup)/config/duaro_controllers.yaml"
             command="load"/>
+  <rosparam file="$(find khi_duaro_description)/config/duaro_joint_limits.yaml"
+            command="load" ns="$(arg robot)"/>
 
   <!-- Load the default controllers -->
   <node name="controller_spawner" pkg="controller_manager"
@@ -47,5 +49,12 @@
         duaro_upper_arm_controller
               " />
   <!-- position_trajectory_controller -->
+
+  <!-- load joint group controllers -->
+  <node name="joint_group_controller_manager" pkg="controller_manager"
+        type="controller_manager" respawn="false"
+        output="screen"
+        args="load duaro_lower_joint_group_controller
+                   duaro_upper_joint_group_controller" />
 
 </launch>

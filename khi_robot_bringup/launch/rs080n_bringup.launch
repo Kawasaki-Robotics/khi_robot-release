@@ -36,6 +36,8 @@
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find khi_robot_bringup)/config/rs080n_controllers.yaml"
             command="load"/>
+  <rosparam file="$(find khi_rs_description)/config/rs080n_joint_limits.yaml"
+            command="load" ns="$(arg robot)"/>
 
   <!-- Load the default controllers -->
   <node name="controller_spawner" pkg="controller_manager"
@@ -46,5 +48,11 @@
 	      rs080n_arm_controller
               " />
   <!-- position_trajectory_controller -->
+
+  <!-- load joint group controllers -->
+  <node name="joint_group_controller_manager" pkg="controller_manager"
+        type="controller_manager" respawn="false"
+        output="screen"
+        args="load rs080n_joint_group_controller" />
 
 </launch>
