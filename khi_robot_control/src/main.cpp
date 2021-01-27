@@ -125,7 +125,7 @@ static struct
 }
 g_stats;
 
-static void publishDiagnostics(RealtimePublisher<diagnostic_msgs::DiagnosticArray> &publisher)
+static void publishDiagnostics(RealtimePublisher<diagnostic_msgs::DiagnosticArray>& publisher)
 {
     if ( publisher.trylock() )
     {
@@ -201,7 +201,7 @@ static inline double now()
     return static_cast<double>(n.tv_nsec) / SEC_2_NSEC + n.tv_sec;
 }
 
-static void timespecInc( struct timespec &tick, int nsec )
+static void timespecInc( struct timespec& tick, const int& nsec )
 {
     tick.tv_nsec += nsec;
     if ( tick.tv_nsec > 0 )
@@ -249,13 +249,13 @@ protected:
     vector<double> history_;
 };
 
-inline bool activate( khi_robot_control::KhiRobotHardwareInterface *robot, controller_manager::ControllerManager *cm, struct timespec *tick )
+inline bool activate( khi_robot_control::KhiRobotHardwareInterface& robot, struct timespec* tick )
 {
     bool ret = true;
 
     if ( g_options.write_ )
     {
-        ret = robot->activate();
+        ret = robot.activate();
         if ( ret == false )
         {
             ROS_ERROR( "Failed to activate KHI robot" );
@@ -284,7 +284,7 @@ void quitRequested( int sig )
 void *controlLoop( void* )
 {
     ros::NodeHandle nh;
-    int robot_state = khi_robot_control::INIT;
+    int state_trigger = khi_robot_control::NONE;
 
     /* Catch attempts to quit */
     signal( SIGTERM, quitRequested );
@@ -332,14 +332,17 @@ void *controlLoop( void* )
     {
         ROS_ERROR( "Failed to open KHI robot" );
         publisher.stop();
-        robot.deactivate();
+        robot.close();
+        delete &robot;
         ros::shutdown();
         return NULL;
     }
-    if ( !activate( &robot, &cm, &tick ) )
+    if ( !activate( robot, &tick ) )
     {
         publisher.stop();
         robot.deactivate();
+        robot.close();
+        delete &robot;
         ros::shutdown();
         return NULL;
     }
@@ -360,27 +363,35 @@ void *controlLoop( void* )
         cm.update( this_moment, durp );
         if ( g_options.write_ )
         {
-            robot.write( this_moment, durp );
-
-            /* Check Robot State */
-            robot_state = robot.getState();
-            if ( robot_state == khi_robot_control::RESTART )
+            /* Robot State */
+            robot.updateState();
+            state_trigger = robot.getStateTrigger();
+            if ( state_trigger == khi_robot_control::HOLD )
             {
-                if ( activate( &robot, &cm, &tick ) )
+                robot.hold();
+                continue;
+            }
+            else if ( state_trigger == khi_robot_control::RESTART )
+            {
+                if ( activate( robot, &tick ) )
                 {
-                    cm.update( this_moment, durp, true );
+                    ros::Time activate_moment( tick.tv_sec, tick.tv_nsec );
+                    robot.read( activate_moment, durp );
+                    cm.update( activate_moment, durp, true );
                 }
                 continue;
             }
-            else if ( robot_state == khi_robot_control::QUIT )
+            else if ( state_trigger == khi_robot_control::QUIT )
             {
                 g_quit = true;
                 continue;
             }
+
+            robot.write( this_moment, durp );
         }
 
         /* Cycle Adjustment */
-        if ( robot.getPeriodDiff( &period_diff ) )
+        if ( robot.getPeriodDiff( period_diff ) )
         {
             timespecInc( tick, PERIOD_DIFF_WEIGHT * period_diff );
         }
@@ -468,6 +479,8 @@ void *controlLoop( void* )
     }
     publisher.stop();
     robot.deactivate();
+    robot.close();
+    delete &robot;
     ROS_INFO( "KHI robot control ended." );
     ros::shutdown();
     return NULL;
