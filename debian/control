@@ -1,0 +1,12 @@
+Source: ros-melodic-khi-robot-test
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-melodic-catkin, ros-melodic-khi-duaro-moveit-config, ros-melodic-khi-robot-bringup, ros-melodic-khi-robot-control, ros-melodic-khi-robot-msgs, ros-melodic-khi-rs007l-moveit-config, ros-melodic-khi-rs007n-moveit-config, ros-melodic-khi-rs080n-moveit-config, ros-melodic-moveit-commander, ros-melodic-rospy, ros-melodic-rostest
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-melodic-khi-robot-test
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-melodic-khi-robot-msgs, ros-melodic-rospy
+Description: Test package for khi_robot
