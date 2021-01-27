@@ -35,11 +35,11 @@
 #ifndef KHI_ROBOT_HARDWARE_INTERFACE_
 #define KHI_ROBOT_HARDWARE_INTERFACE_
 
-// ROS
 #include <ros/ros.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+#include <joint_limits_interface/joint_limits_interface.h>
 #include <khi_robot_client.h>
 
 namespace khi_robot_control
@@ -51,19 +51,23 @@ public:
     KhiRobotHardwareInterface();
     ~KhiRobotHardwareInterface();
 
-    bool open( std::string robot_name, std::string ip_address, double period, bool in_simulation = false );
+    bool open( const std::string& robot_name, const std::string& ip_address, const double& period, const bool in_simulation = false );
     bool activate();
+    bool hold();
     void deactivate();
-    void read( const ros::Time time, const ros::Duration period );
-    void write( const ros::Time time, const ros::Duration period );
-    int getState();
-    bool getPeriodDiff( double *diff );
+    void close();
+    void read( const ros::Time& time, const ros::Duration& period ) override;
+    void write( const ros::Time& time, const ros::Duration& period ) override;
+    int updateState();
+    int getStateTrigger();
+    bool getPeriodDiff( double& diff );
 
 private:
     hardware_interface::JointStateInterface joint_state_interface;
     hardware_interface::PositionJointInterface joint_position_interface;
+    joint_limits_interface::PositionJointSaturationInterface joint_limit_interface;
 
-    khi_robot_control::JointData joint;
+    khi_robot_control::KhiRobotData data;
     khi_robot_control::KhiRobotClient *client;
 };
 
