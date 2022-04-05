@@ -1,3 +1,42 @@
+## khi_robot (noetic) - 1.3.0-2
+
+The packages in the `khi_robot` repository were released into the `noetic` distro by running `/usr/bin/bloom-release khi_robot --track noetic --rosdistro noetic` on `Tue, 05 Apr 2022 01:48:53 -0000`
+
+These packages were released:
+- `khi_duaro_description`
+- `khi_duaro_gazebo`
+- `khi_duaro_ikfast_plugin`
+- `khi_duaro_moveit_config`
+- `khi_robot`
+- `khi_robot_bringup`
+- `khi_robot_control`
+- `khi_robot_msgs`
+- `khi_robot_test`
+- `khi_rs007l_moveit_config`
+- `khi_rs007n_moveit_config`
+- `khi_rs013n_moveit_config`
+- `khi_rs080n_moveit_config`
+- `khi_rs_description`
+- `khi_rs_gazebo`
+- `khi_rs_ikfast_plugin`
+
+Version of package(s) in repository `khi_robot`:
+
+- upstream repository: https://github.com/Kawasaki-Robotics/khi_robot.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `1.3.0-1`
+- new version: `1.3.0-2`
+
+Versions of tools used:
+
+- bloom version: `0.10.7`
+- catkin_pkg version: `0.4.24`
+- rosdep version: `0.21.0`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## khi_robot (noetic) - 1.3.0-1
 
 The packages in the `khi_robot` repository were released into the `noetic` distro by running `/usr/bin/bloom-release khi_robot --track noetic --rosdistro noetic` on `Tue, 05 Apr 2022 01:22:58 -0000`
