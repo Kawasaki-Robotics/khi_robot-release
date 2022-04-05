@@ -1,0 +1,41 @@
+ros-noetic-khi-duaro-ikfast-plugin (1.3.0-1focal) focal; urgency=high
+
+
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Mon, 04 Apr 2022 15:00:00 -0000
+
+ros-noetic-khi-duaro-ikfast-plugin (1.2.0-1focal) focal; urgency=high
+
+
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Tue, 26 Jan 2021 15:00:00 -0000
+
+ros-noetic-khi-duaro-ikfast-plugin (1.1.2-1focal) focal; urgency=high
+
+
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Thu, 06 Jun 2019 15:00:00 -0000
+
+ros-noetic-khi-duaro-ikfast-plugin (1.1.1-1focal) focal; urgency=high
+
+
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Wed, 24 Apr 2019 15:00:00 -0000
+
+ros-noetic-khi-duaro-ikfast-plugin (1.1.0-1focal) focal; urgency=high
+
+  * Merge pull request #10 <https://github.com/Kawasaki-Robotics/khi_robot/issues/10> from d-nakamichi/khi_prefix
+    Prefix all pkgs with 'khi_'
+  * Convert duaro_* to khi_duaro_*
+  * Contributors: Hiroki Matsui, nakamichi_d
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Wed, 10 Apr 2019 15:00:00 -0000
+
+ros-noetic-khi-duaro-ikfast-plugin (1.0.0-1focal) focal; urgency=high
+
+  * duAro IKfast
+  * Contributors: nakamichi_d, matsui_hiro
+
+ -- matsui_hiro <matsui_hiro@khi.co.jp>  Wed, 27 Mar 2019 15:00:00 -0000
+
+
