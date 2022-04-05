@@ -1,0 +1,12 @@
+Source: ros-noetic-khi-duaro-gazebo
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-noetic-catkin, ros-noetic-gazebo-ros-control
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-noetic-khi-duaro-gazebo
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+Description: The khi_duaro_gazebo package
