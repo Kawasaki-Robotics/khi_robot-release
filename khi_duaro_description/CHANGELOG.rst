@@ -2,6 +2,9 @@
 Changelog for package khi_duaro_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.0 (2022-04-05)
+------------------
+
 1.2.0 (2021-01-27)
 ------------------
 * Merge branch 'master' into refactoring

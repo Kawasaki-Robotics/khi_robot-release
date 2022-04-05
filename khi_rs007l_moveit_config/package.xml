@@ -1,6 +1,6 @@
 <package>
   <name>khi_rs007l_moveit_config</name>
-  <version>1.2.0</version>
+  <version>1.3.0</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the khi_rs007l with the MoveIt! Motion Planning Framework
   </description>
@@ -15,6 +15,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <run_depend>khi_rs_ikfast_plugin</run_depend>
   <run_depend>moveit_ros_move_group</run_depend>
   <run_depend>moveit_fake_controller_manager</run_depend>
   <run_depend>moveit_kinematics</run_depend>
