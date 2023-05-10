@@ -4,7 +4,7 @@
     publish_rate: 50  
   
   # Position - Joint Position Trajectory Controller -------------------
-  rs013n_arm_controller:
+  rs025n_arm_controller:
     type: "position_controllers/JointTrajectoryController"
     joints:
       - joint1
@@ -33,14 +33,14 @@
         goal: 0.0             
       joint6:
         trajectory: 0 
-        goal: 0.0      
+        goal: 0.0       
 
     state_publish_rate:  50 # Defaults to 50
     action_monitor_rate: 20 # Defaults to 20
     #hold_trajectory_duration: 0 # Defaults to 0.5
 
   # Joint Group Position Controller -------------------
-  rs013n_joint_group_controller:
+  rs025n_joint_group_controller:
     type: "position_controllers/JointGroupPositionController"
     joints:
       - joint1
