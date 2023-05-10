@@ -6,12 +6,12 @@
   <arg name="simulation" default="false" />
   <arg name="viewer" default="false" />
   <arg name="ip" default="192.168.0.2" />
-  <arg name="period" default="4" />
-  <arg name="robot" default="WD002N" />
+  <arg name="period" default="2" />
+  <arg name="robot" default="RS020N" />
 
   <!-- Load robot description -->
   <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find khi_duaro_description)/urdf/duaro.urdf.xacro'" />
+    command="$(find xacro)/xacro --inorder '$(find khi_rs_description)/urdf/rs020n.urdf.xacro'" />
 
   <rosparam>
   </rosparam>
@@ -34,9 +34,9 @@
 
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find khi_robot_bringup)/config/duaro_controllers.yaml"
+  <rosparam file="$(find khi_robot_bringup)/config/rs020n_controllers.yaml"
             command="load"/>
-  <rosparam file="$(find khi_duaro_description)/config/duaro_joint_limits.yaml"
+  <rosparam file="$(find khi_rs_description)/config/rs020n_joint_limits.yaml"
             command="load" ns="$(arg robot)"/>
 
   <!-- Load the default controllers -->
@@ -45,8 +45,7 @@
         output="screen"
         args="--shutdown-timeout 0.1
 	      joint_state_controller
-	      duaro_lower_arm_controller
-        duaro_upper_arm_controller
+	      rs020n_arm_controller
               " />
   <!-- position_trajectory_controller -->
 
@@ -54,7 +53,6 @@
   <node name="joint_group_controller_manager" pkg="controller_manager"
         type="controller_manager" respawn="false"
         output="screen"
-        args="load duaro_lower_joint_group_controller
-                   duaro_upper_joint_group_controller" />
+        args="load rs020n_joint_group_controller" />
 
 </launch>
