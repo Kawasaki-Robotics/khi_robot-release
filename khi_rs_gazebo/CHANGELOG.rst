@@ -2,6 +2,31 @@
 Changelog for package khi_rs_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.0 (2023-04-28)
+------------------
+* Merge pull request `#79 <https://github.com/Kawasaki-Robotics/khi_robot/issues/79>`_ from ohno-atsushi/add_rs020n
+  Add rs020n
+* Add rs020n
+* Merge pull request `#71 <https://github.com/Kawasaki-Robotics/khi_robot/issues/71>`_ from matsui-hiro/fix_controller_yml
+  Fix controller yml
+* Fix controller yml setting
+* Merge pull request `#68 <https://github.com/Kawasaki-Robotics/khi_robot/issues/68>`_ from matsui-hiro/add_rs025n
+  Add rs025n
+* Add rs025n
+* Contributors: HirokiTakami, matsui_hiro, ohno_atsushi
+
+1.3.0 (2022-04-05)
+------------------
+* Add rs013n (`#50 <https://github.com/Kawasaki-Robotics/khi_robot/issues/50>`_)
+  * Add rs013n
+  * Update rs013n pkgs
+  * Update libkrnx
+  * Fixed rs013n_bringup.launch to use xacro
+  * Update libkrnx to 2.2.0
+  * Modify test program for RS series robots
+  * Remove kinetic from travis.yml
+* Contributors: Hiroki Matsui
+
 1.2.0 (2021-01-27)
 ------------------
 * Add position_controllers/JointGroupPositionController (#22)
