@@ -48,10 +48,11 @@ roslaunch ***_moveit_config moveit_planning_execution.launch
 
 ## サポートしているロボット
 
- * duaro
+ * duaro1
  * rs007l
  * rs007n
  * rs013n
+ * rs025n
  * rs80n
 
 ## ノート
