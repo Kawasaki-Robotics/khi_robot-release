@@ -1,0 +1,12 @@
+Source: ros-melodic-khi-rs-ikfast-plugin
+Section: misc
+Priority: optional
+Maintainer: matsui_hiro <matsui_hiro@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), liblapack-dev, ros-melodic-catkin, ros-melodic-moveit-core, ros-melodic-pluginlib, ros-melodic-roscpp, ros-melodic-tf-conversions
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-melodic-khi-rs-ikfast-plugin
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, liblapack-dev, ros-melodic-moveit-core, ros-melodic-pluginlib, ros-melodic-roscpp, ros-melodic-tf-conversions
+Description: The khi_rs_ikfast_plugin package
