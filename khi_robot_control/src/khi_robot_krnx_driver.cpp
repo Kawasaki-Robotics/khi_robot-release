@@ -40,6 +40,7 @@ namespace khi_robot_control
 #define KHI_ROBOT_WD002N "WD002N"
 #define KHI_ROBOT_RS007L "RS007L"
 #define KHI_ROBOT_RS007N "RS007N"
+#define KHI_ROBOT_RS013N "RS013N"
 #define KHI_ROBOT_RS080N "RS080N"
 #define KHI_KRNX_BUFFER_SIZE 4
 #define KHI_KRNX_ACTIVATE_TH 0.02
@@ -72,9 +73,11 @@ KhiRobotKrnxDriver::~KhiRobotKrnxDriver()
 
 bool KhiRobotKrnxDriver::setState( const int& cont_no, const int& state )
 {
+    bool is_state_set;
     std::lock_guard<std::mutex> lock( mutex_state[cont_no] );
 
-    KhiRobotDriver::setState( cont_no, state );
+    is_state_set = KhiRobotDriver::setState( cont_no, state );
+    return is_state_set;
 }
 
 int KhiRobotKrnxDriver::execAsMonCmd( const int& cont_no, const char* cmd, char* buffer, int buffer_sz, int* as_err_code )
