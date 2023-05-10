@@ -1,0 +1,12 @@
+Source: ros-noetic-khi-robot-msgs
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-noetic-catkin, ros-noetic-message-generation, ros-noetic-std-msgs
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-noetic-khi-robot-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-noetic-message-runtime, ros-noetic-std-msgs
+Description: This package contains KHI ROS robot msgs
