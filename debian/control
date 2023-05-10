@@ -1,0 +1,12 @@
+Source: ros-noetic-khi-robot-test
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-noetic-catkin, ros-noetic-khi-duaro-moveit-config, ros-noetic-khi-robot-bringup, ros-noetic-khi-robot-control, ros-noetic-khi-robot-msgs, ros-noetic-khi-rs007l-moveit-config, ros-noetic-khi-rs007n-moveit-config, ros-noetic-khi-rs013n-moveit-config, ros-noetic-khi-rs020n-moveit-config, ros-noetic-khi-rs080n-moveit-config, ros-noetic-moveit-commander, ros-noetic-rospy, ros-noetic-rostest
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-noetic-khi-robot-test
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-noetic-khi-robot-msgs, ros-noetic-rospy
+Description: Test package for khi_robot
