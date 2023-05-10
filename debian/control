@@ -1,0 +1,12 @@
+Source: ros-melodic-khi-robot
+Section: misc
+Priority: optional
+Maintainer: nakamichi_d <nakamichi_d@khi.co.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-melodic-catkin
+Homepage: http://ros.org/wiki/khi_robot
+Standards-Version: 3.9.2
+
+Package: ros-melodic-khi-robot
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-melodic-khi-duaro-description, ros-melodic-khi-duaro-gazebo, ros-melodic-khi-duaro-ikfast-plugin, ros-melodic-khi-duaro-moveit-config, ros-melodic-khi-robot-bringup, ros-melodic-khi-robot-control, ros-melodic-khi-robot-msgs, ros-melodic-khi-rs-description, ros-melodic-khi-rs-gazebo, ros-melodic-khi-rs-ikfast-plugin, ros-melodic-khi-rs007l-moveit-config, ros-melodic-khi-rs007n-moveit-config, ros-melodic-khi-rs013n-moveit-config, ros-melodic-khi-rs025n-moveit-config, ros-melodic-khi-rs080n-moveit-config
+Description: Meta package for khi_robot
