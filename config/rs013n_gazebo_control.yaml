@@ -4,7 +4,7 @@
     publish_rate: 50  
   
   # Position - Joint Position Trajectory Controller -------------------
-  rs080n_arm_controller:
+  rs013n_arm_controller:
     type: "position_controllers/JointTrajectoryController"
     joints:
       - joint1
@@ -40,7 +40,7 @@
     #hold_trajectory_duration: 0 # Defaults to 0.5
 
   # Joint Group Position Controller -------------------
-  rs080n_joint_group_controller:
+  rs013n_joint_group_controller:
     type: "position_controllers/JointGroupPositionController"
     joints:
       - joint1
