@@ -1,3 +1,44 @@
+## khi_robot (melodic) - 1.4.0-2
+
+The packages in the `khi_robot` repository were released into the `melodic` distro by running `/usr/bin/bloom-release khi_robot --track melodic --rosdistro melodic` on `Wed, 10 May 2023 02:14:31 -0000`
+
+These packages were released:
+- `khi_duaro_description`
+- `khi_duaro_gazebo`
+- `khi_duaro_ikfast_plugin`
+- `khi_duaro_moveit_config`
+- `khi_robot`
+- `khi_robot_bringup`
+- `khi_robot_control`
+- `khi_robot_msgs`
+- `khi_robot_test`
+- `khi_rs007l_moveit_config`
+- `khi_rs007n_moveit_config`
+- `khi_rs013n_moveit_config`
+- `khi_rs020n_moveit_config`
+- `khi_rs025n_moveit_config`
+- `khi_rs080n_moveit_config`
+- `khi_rs_description`
+- `khi_rs_gazebo`
+- `khi_rs_ikfast_plugin`
+
+Version of package(s) in repository `khi_robot`:
+
+- upstream repository: https://github.com/Kawasaki-Robotics/khi_robot.git
+- release repository: https://github.com/Kawasaki-Robotics/khi_robot-release.git
+- rosdistro version: `1.2.0-1`
+- old version: `1.4.0-1`
+- new version: `1.4.0-2`
+
+Versions of tools used:
+
+- bloom version: `0.10.7`
+- catkin_pkg version: `0.4.23`
+- rosdep version: `0.20.1`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## khi_robot (melodic) - 1.4.0-1
 
 The packages in the `khi_robot` repository were released into the `melodic` distro by running `/usr/bin/bloom-release khi_robot --track melodic --rosdistro melodic` on `Wed, 10 May 2023 01:24:44 -0000`
