@@ -1,13 +1,28 @@
 # Connecting real robot
+## 1. Supported system
 
-## 1. Supported AS system
+### 1.1 Controller requirements
 
-### F Series
+Controllers with ”✓”  are available. 
 
-Handling: Higher than ```ASF_01000000W```  
-duAro: Higher than ```ASF_06000000J```  
+||E02(OpenAs)|F01|F02|F60|F61|
+|---|---|---|---|---|---|
+|duaro1|||||✓|
+|rs007l||✓||✓||
+|rs007n||✓||✓||
+|rs013n||✓||✓||
+|rs025n|||✓|||
+|rs080n|✓||✓|||
 
-### OpenAS Series
+### 1.2 Supported AS version
+
+#### F Series
+
+Handling(F60): Higher than ```ASF_01000000W```  
+Handling(F01/02): Higher than ```ASF_010102006```  
+duAro(F61): Higher than ```ASF_06000000J```  
+
+#### E Series(OpenAS Only)
 
 Handling: Higher than ```ASE401010XX3S```  
 
@@ -29,7 +44,7 @@ Make sure that the robot controller used for real-time control satisfies the fol
 
 Make sure that the Ubuntu PC used for real-time control satisfies the following conditions.
 
-* The PC is using realtime kernel for Ubuntu 16.04/18.04.
+* The PC is using realtime kernel for Ubuntu 16.04/18.04/20.04.
 * The user has real-time permissions.
   * (e.g.)Making a real-time group named `realtime`
     1. Make a group and add a user
@@ -301,7 +316,7 @@ Error code of KRNX API is defined in “khi_robot/khi_robot_control/include/krnx
 
 ## 7. Precausions
 
-* Make sure to use realtime kernel for Ubuntu 16.04/18.04.
+* Make sure to use realtime kernel for Ubuntu 16.04/18.04/20.04.
 * When a robot controller is in the real-time control mode, its state is same as the REPEAT mode. Therefore make sure to the safety issues when the robot controller is in real-time control mode.
 * Never make any changes on the sources of the “khi_robot” package.
 * Refer to the Documents and community of the MoveIt! for more details on motion/path planning and how to calculate command value.

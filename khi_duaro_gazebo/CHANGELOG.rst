@@ -2,6 +2,16 @@
 Changelog for package khi_duaro_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.0 (2023-04-28)
+------------------
+* Merge pull request `#62 <https://github.com/Kawasaki-Robotics/khi_robot/issues/62>`_ from y-yosuke/mod-goinitial
+  mod go_initial.sh for Gazebo simulator with ROS Melodic.
+* mod go_initial.sh for Gazebo simulator with using in ROS Melodic.
+* Contributors: HirokiTakami, Yosuke Yamamoto
+
+1.3.0 (2022-04-05)
+------------------
+
 1.2.0 (2021-01-27)
 ------------------
 * Add position_controllers/JointGroupPositionController (#22)
