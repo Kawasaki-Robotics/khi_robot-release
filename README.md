@@ -48,10 +48,11 @@ Refer to [docs/ConnectingRealRobot.md](docs/ConnectingRealRobot.md)
 
 ## Supported Robot
 
- * duaro
+ * duaro1
  * rs007l
  * rs007n
  * rs013n
+ * rs025n
  * rs80n
 
 ## Notes
